@@ -1,8 +1,11 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
 import { UsersIcon } from "@heroicons/react/24/solid";
 import BadgeIndicator from "@/app/_components/badgeIndicator";
 import TimeIndicator from "@/app/_components/timeIndicator";
+import { useCountdown } from "../_customHooks/timeCustom";
 
 export default function CabinCard({ cabin }) {
   const {
@@ -16,17 +19,17 @@ export default function CabinCard({ cabin }) {
     discountDays,
   } = cabin;
 
-  console.log(cabin);
+  const { hasTimeLeft, timeLeft, isExpired } = useCountdown(discountDays);
 
   return (
     <>
-      {discount > 0 && (
+      {!isExpired && (
         <div className="relative">
-          <TimeIndicator discountDays={discountDays} />
+          <TimeIndicator timeLeft={timeLeft} />
         </div>
       )}
 
-      <div className="flex border-primary-800 border">
+      <div className="flex border-primary-800 border ">
         <div className=" flex-1 relative">
           <Image
             className="object-cover border-r border-primary-800"
@@ -38,7 +41,7 @@ export default function CabinCard({ cabin }) {
           />
         </div>
 
-        <div className="grow">
+        <div className="grow   ">
           <div className="pt-5 pb-4 px-7 bg-primary-950 ">
             <h3 className="text-accent-500 font-semibold text-2xl mb-3 ">
               Cabin {name}
@@ -53,7 +56,7 @@ export default function CabinCard({ cabin }) {
             </div>
 
             <div className="flex gap-3 justify-end items-baseline ">
-              {discount > 0 ? (
+              {!isExpired ? (
                 <>
                   <BadgeIndicator discount={discount}>
                     <span className="text-3xl font-[350]">
@@ -61,9 +64,8 @@ export default function CabinCard({ cabin }) {
                     </span>
                   </BadgeIndicator>
 
-                  <span className="line-through font-semibold text-primary-300  ">
-                    {" "}
-                    ${regularPrice}{" "}
+                  <span className="line-through font-semibold text-primary-300">
+                    ${regularPrice}
                   </span>
                 </>
               ) : (
@@ -73,8 +75,13 @@ export default function CabinCard({ cabin }) {
             </div>
           </div>
 
-          <div>
-            <Link href={`/cabins/${id}`}>Details & researvation &rarr;</Link>
+          <div className="border-t-primary-800 text-right">
+            <Link
+              className="border border-primary-800 px-6 inline-block hover:bg-accent-600 transition-all hover:text-primary-900 border border-dashed   "
+              href={`/cabins/${id}`}
+            >
+              Details & researvation &rarr;
+            </Link>
           </div>
         </div>
       </div>

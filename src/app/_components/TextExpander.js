@@ -4,19 +4,29 @@ import { useState } from "react";
 export default function TextExpander({ children }) {
   const [isExpanded, setIsExpanded] = useState(false);
 
-  const displayText = isExpanded
-    ? String(children)
-    : String(children).split(" ").slice(0, 40).join(" ") + "...";
+  const words = String(children).split(" ");
+
+  const truncated = words
+    .slice(0, 20)
+    .join(" ")
+    .replace(/[.,!?;:]+$/, "");
+
+  const isShort = words.length <= 20;
+
+  const displayText = isExpanded || isShort ? children : truncated + "...";
 
   return (
     <span>
       {displayText}
-      <button
-        className="link text-accent-300"
-        onClick={() => setIsExpanded(!isExpanded)}
-      >
-        {isExpanded ? "showless" : "showmore"}
-      </button>
+
+      {!isShort && (
+        <button
+          className="link text-accent-300"
+          onClick={() => setIsExpanded((isExpanded) => !isExpanded)}
+        >
+          {isExpanded ? "show less" : "show more"}
+        </button>
+      )}
     </span>
   );
 }

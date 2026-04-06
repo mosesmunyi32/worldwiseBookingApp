@@ -2,7 +2,7 @@ export default function BadgeIndicator({ children, discount }) {
   return (
     <div className="indicator">
       <span
-        className="indicator-item badge bg-accent-600 badge-sm border-primary-300   "
+        className="indicator-item  badge p-1 badge-sm bg-transparent text-accent-200 text-xl"
         style={{ top: "-8px", right: "-8px" }}
       >
         -${discount}
