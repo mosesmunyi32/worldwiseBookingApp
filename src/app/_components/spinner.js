@@ -1,5 +1,5 @@
-import { Item, ItemContent, ItemMedia, ItemTitle } from "@/components/ui/item";
-import { Spinner } from "@/components/ui/spinner";
+import { Item, ItemContent, ItemMedia, ItemTitle } from "@/_components/ui/item";
+import { Spinner } from "@/_components/ui/spinner";
 
 export default function SpinData() {
   return (

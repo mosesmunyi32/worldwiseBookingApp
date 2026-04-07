@@ -1,14 +1,13 @@
 import { getCabin, getCabins } from "../../_lib/data-service";
 import Cabin from "@/app/_components/cabin";
 
-// export async function generateStaticParams() {
-//   const cabins = await getCabins();
+export async function generateStaticParams() {
+  // Skip in development to avoid slow recompiles
+  if (process.env.NODE_ENV === "development") return [];
 
-//   const ids = cabins.map((cabin) => {
-//     return { cabinId: String(cabin.id) };
-//   });
-//   return ids;
-// }
+  const cabins = await getCabins();
+  return cabins.map((cabin) => ({ cabinId: String(cabin.id) }));
+}
 
 export default async function Cabins({ params }) {
   const { cabinId } = await params;

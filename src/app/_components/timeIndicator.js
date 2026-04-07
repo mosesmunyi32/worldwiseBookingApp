@@ -1,7 +1,5 @@
 "use client";
 
-import { useCountdown } from "../_customHooks/timeCustom";
-
 export default function TimeIndicator({ timeLeft }) {
   const timeUnits = [
     { value: timeLeft.days, label: "days" },

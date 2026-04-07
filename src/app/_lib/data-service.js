@@ -12,6 +12,7 @@ export async function getCabins() {
 }
 
 export async function getCabin(id) {
+  console.log("getting cabins");
   const { data: cabin, error } = await supabase
     .from("cabins")
     .select("*")

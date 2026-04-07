@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 
 export default function Page() {
   return (
@@ -69,12 +70,12 @@ export default function Page() {
             fuga porro amet? Unde, totam!
           </p>
           <div>
-            <a
+            <Link
               href="/cabins"
               className="btn btn-xl bg-accent-600 text-primary-900 hover:bg-accent-300 hover:text-primary-900"
             >
               explore Our Luxury cabins
-            </a>
+            </Link>
           </div>
         </div>
       </div>
