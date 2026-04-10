@@ -25,3 +25,16 @@ export async function getCabin(id) {
 
   return cabin;
 }
+
+// export async function UpdateCabinUponExpirely(id) {
+//   const dateNow = new Date().toISOString();
+
+//   const { data, error } = await supabase
+//     .from("cabins")
+//     .update({ discountDays: null, dicount: null })
+//     .lt("discountDayz", dateNow)
+//     .eq("id", Number(id))
+//     .select();
+
+//   if (error) return console.error("failed to update the cabin");
+// }

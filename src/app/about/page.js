@@ -72,7 +72,7 @@ export default function Page() {
           <div>
             <Link
               href="/cabins"
-              className="btn btn-xl bg-accent-600 text-primary-900 hover:bg-accent-300 hover:text-primary-900"
+              className="btn btn-xl border-none bg-accent-600 text-primary-900 hover:bg-accent-300 hover:text-primary-900"
             >
               explore Our Luxury cabins
             </Link>

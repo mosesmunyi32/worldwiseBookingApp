@@ -1,5 +1,7 @@
+import Link from "next/link";
 import { getCabin, getCabins } from "../../_lib/data-service";
 import Cabin from "@/app/_components/cabin";
+import DateSelector from "@/app/_components/DateSelector";
 
 export async function generateStaticParams() {
   // Skip in development to avoid slow recompiles
@@ -19,8 +21,24 @@ export default async function Cabins({ params }) {
   }
 
   return (
-    <div>
-      <Cabin cabin={cabin} />
+    <div className="flex flex-col items-center flex-wrap gap-4">
+      <div>
+        <Cabin cabin={cabin} />
+      </div>
+
+      <div>
+        <h2 className="text-5xl font-semibold text-center mb-10 text-accnt-400">
+          Reserve {cabin.name} today. Pay on arrival{" "}
+        </h2>
+      </div>
+
+      <Link href="/account/reservations">
+        <button className=" btn w-md h-20 rounded-2xl border-none shadow-none font-medium text-2xl items-center justify-center bg-accent-700 text-primary-100 hover:bg-accent-900 hover:text-primary-300">
+          Researve this cabin
+        </button>
+      </Link>
+
+      <DateSelector />
     </div>
   );
 }

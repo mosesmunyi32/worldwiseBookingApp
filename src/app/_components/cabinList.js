@@ -3,6 +3,7 @@ import { getCabins } from "../_lib/data-service";
 import CabinCard from "./cabinCard";
 
 export default async function CabinList() {
+  await new Promise((resolve) => setTimeout(resolve, 3000));
   const cabins = await getCabins();
 
   if (!cabins.length) return null;

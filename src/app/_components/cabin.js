@@ -6,7 +6,7 @@ export default function Cabin({ cabin }) {
   const { name, maxCapacity, description, image } = cabin;
 
   return (
-    <div className="grid grid-cols-[3fr_4fr] gap-20 border-y border-dashed border-primary-800 py-5 px-10 lg:pl-20 mb-24">
+    <div className="grid grid-cols-[3fr_4fr] gap-20 border-y border-dashed border-primary-800 py-5 px-10 lg:pl-20">
       <div className="relative h-100 scale-[1.15] -translate-x-3">
         <Image
           src={image}
@@ -18,7 +18,7 @@ export default function Cabin({ cabin }) {
       </div>
 
       <div>
-        <h3 className="text-accent-100 font-black text-7xl mb-5 -translate-x-[30%] bg-primary-950 p-6 pb-1 w-[150%]">
+        <h3 className="text-accent-100 font-black text-7xl -translate-x-[30%] bg-primary-950 p-6 pb-1 w-[150%]">
           Cabin {name}
         </h3>
 
@@ -28,24 +28,28 @@ export default function Cabin({ cabin }) {
 
         <ul className="flex flex-col gap-4 mb-7">
           <li className="flex gap-3 items-center">
-            <UsersIcon className="h-5 w-5 text-primary-600" />
-            <span className="text-lg">
-              For up to <span className="font-bold">{maxCapacity}</span> guests
+            <UsersIcon className="h-5 w-5 text-primary-300" />
+            <span className="text-lg text-primary-300  ">
+              For up to{" "}
+              <span className="font-bold text-primary-200 ">{maxCapacity}</span>{" "}
+              guests
             </span>
           </li>
 
           <li className="flex gap-3 items-center">
-            <MapPinIcon className="h-5 w-5 text-primary-600" />
-            <span className="text-lg">
+            <MapPinIcon className="h-5 w-5 text-primary-300" />
+            <span className="text-lg text-primary-300 ">
               Located in the heart of the{" "}
-              <span className="font-bold">Dolomites</span> (Italy)
+              <span className="font-bold text-primary-200">Dolomites</span>{" "}
+              (Italy)
             </span>
           </li>
 
           <li className="flex gap-3 items-center">
-            <EyeOffIcon className="h-5 w-5 text-primary-600" />
-            <span className="text-lg">
-              Privacy <span className="font-bold">100%</span> guaranteed
+            <EyeOffIcon className="h-5 w-5 text-primary-300" />
+            <span className="text-lg text-primary-300 ">
+              Privacy <span className="font-bold  text-primary-200">100%</span>{" "}
+              guaranteed
             </span>
           </li>
         </ul>

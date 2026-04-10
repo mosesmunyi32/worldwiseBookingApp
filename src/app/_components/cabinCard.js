@@ -6,6 +6,7 @@ import { UsersIcon } from "@heroicons/react/24/solid";
 import BadgeIndicator from "@/app/_components/badgeIndicator";
 import TimeIndicator from "@/app/_components/timeIndicator";
 import { useCountdown } from "../_customHooks/timeCustom";
+import { useEffect } from "react";
 
 export default function CabinCard({ cabin }) {
   const {

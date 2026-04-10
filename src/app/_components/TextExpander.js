@@ -3,6 +3,7 @@ import { useState } from "react";
 
 export default function TextExpander({ children }) {
   const [isExpanded, setIsExpanded] = useState(false);
+  const [isOverflow, setOverflow] = useState(false);
 
   const words = String(children).split(" ");
 
@@ -15,18 +16,31 @@ export default function TextExpander({ children }) {
 
   const displayText = isExpanded || isShort ? children : truncated + "...";
 
+  function handleClick() {
+    setIsExpanded((isExpanded) => !isExpanded);
+    setOverflow((isOverflow) => !isOverflow);
+  }
+
   return (
     <span>
-      {displayText}
+      {!isOverflow && displayText}
 
+      {isOverflow && (
+        <div className="overflow-y-scroll h-30">{displayText} </div>
+      )}
       {!isShort && (
-        <button
-          className="link text-accent-300"
-          onClick={() => setIsExpanded((isExpanded) => !isExpanded)}
-        >
-          {isExpanded ? "show less" : "show more"}
-        </button>
+        <Button onClick={handleClick}>
+          {!isExpanded ? "showmore" : "showless"}
+        </Button>
       )}
     </span>
+  );
+}
+
+function Button({ children, onClick }) {
+  return (
+    <button onClick={onClick} className="link text-accent-300">
+      {children}
+    </button>
   );
 }
