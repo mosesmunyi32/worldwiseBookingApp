@@ -1,7 +1,8 @@
-import { Geist, Geist_Mono } from "next/font/google";
-import "@/app/_styles/globals.css";
 import { Josefin_Sans } from "next/font/google";
+import "@/app/_styles/globals.css";
 import Header from "./_components/header";
+import { ReservationProvider } from "./_components/ReservationContext";
+import SideBar from "./_components/SideBar";
 
 const josefin = Josefin_Sans({
   subsets: ["latin"],
@@ -9,7 +10,7 @@ const josefin = Josefin_Sans({
 });
 
 export const metadata = {
-  title: "The Wild Oasis",
+  template: "%s / The Wild Oasis",
   default: "Welcome / The wild Oasis",
   description:
     "Luxurious cabin hotel, located in the heart o the Italian Dolomites, sorrounded by beautiful mountains and dark forest",
@@ -19,13 +20,18 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body
-        className={`${josefin.className} antialiased bg-primary-950 text-primary-100 min-h-screen flex  flex-col md:px-5 lg:px-20 xl:px-70 relative`}
+        className={`${josefin.className} antialiased bg-primary-950 text-primary-100 min-h-screen flex  flex-col relative`}
       >
-        <Header />
-        <div className="flex-1 px-8 py-12 grid">
-          <main className="max-w-7x1 mx-auto ">{children}</main>
-        </div>
+        <SideBar>
+          <div className="flex-1 px-8 py-12 grid">
+            <main className="max-w-7xl mx-auto mt-20 ">
+              <ReservationProvider>{children}</ReservationProvider>
+            </main>
+          </div>
+        </SideBar>
       </body>
     </html>
   );
 }
+
+// md:px-5 lg:px-20 xl:px-70

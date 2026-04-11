@@ -3,7 +3,7 @@ import Link from "next/link";
 
 export default function Navigation() {
   return (
-    <nav className="text-xl">
+    <nav className=" flex  pl-100 text-xl">
       <ul className="flex gap-16 items-center">
         <li>
           <Link

@@ -1,7 +1,5 @@
+import SideBar from "../_components/SideBar";
+
 export default function Page() {
-  return (
-    <div>
-      <p>Welcome Guest!!</p>
-    </div>
-  );
+  return <div>here is you account router</div>;
 }

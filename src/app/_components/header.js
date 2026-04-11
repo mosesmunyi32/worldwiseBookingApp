@@ -3,9 +3,10 @@ import Navigation from "./navigation";
 
 export default function Header() {
   return (
-    <header className="border-b border-primary-900 px-8 py-5 ">
-      <div className="flex justify-between items-center max-w-7xl mx-auto">
+    <header className=" px-8 py-5 ">
+      <div className="flex gap-60 mr-auto justify-around items-center max-w-7xl mx-auto">
         <Logo />
+
         <Navigation />
       </div>
     </header>

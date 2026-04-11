@@ -1,6 +1,6 @@
 @import "tailwindcss";
-@import "tw-animate-css";
-@import "shadcn/tailwind.css";
+/* @import "tw-animate-css"; */
+/* @import "shadcn/tailwind.css"; */
 /* @import "tw-animate-css"; */
 /* @import "shadcn/tailwind.css"; */
 
@@ -154,4 +154,21 @@
   html {
     @apply font-sans;
   }
+}
+
+.rdp-months .rdp-selected {
+  --rdp-cell-size: 32px !important;
+  --rdp-accent-color: theme("colors.accent.500") !important;
+  --rdp-background-color: theme("colors.accent.600") !important;
+
+  margin: 0 !important;
+}
+
+.rdp-nav {
+  margin: 0 !important;
+}
+
+.rdp-root {
+  margin: 0 !important;
+  padding: 0 !important;
 }

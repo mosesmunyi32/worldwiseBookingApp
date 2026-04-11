@@ -3,13 +3,13 @@ import Link from "next/link";
 
 export default function Logo() {
   return (
-    <Link href="/" className="flex items-center gap-4 z-10">
+    <Link href="/" className="flex  items-center gap-4 z-10">
       <div>
         <Image
           src="/logo.png"
           alt="The WorldOasis App Logo"
-          height={60}
-          width={60}
+          height={40}
+          width={40}
           quality={88}
           loading="eager"
         />

@@ -2,6 +2,7 @@ import Link from "next/link";
 import { getCabin, getCabins } from "../../_lib/data-service";
 import Cabin from "@/app/_components/cabin";
 import DateSelector from "@/app/_components/DateSelector";
+import Reservation from "@/app/_components/Reservation";
 
 export async function generateStaticParams() {
   // Skip in development to avoid slow recompiles
@@ -27,18 +28,18 @@ export default async function Cabins({ params }) {
       </div>
 
       <div>
-        <h2 className="text-5xl font-semibold text-center mb-10 text-accnt-400">
+        <h2 className="text-4xl text-accent-400 font-semibold text-center">
           Reserve {cabin.name} today. Pay on arrival{" "}
         </h2>
       </div>
 
-      <Link href="/account/reservations">
+      {/* <Link href="/account/reservations">
         <button className=" btn w-md h-20 rounded-2xl border-none shadow-none font-medium text-2xl items-center justify-center bg-accent-700 text-primary-100 hover:bg-accent-900 hover:text-primary-300">
           Researve this cabin
         </button>
-      </Link>
+      </Link> */}
 
-      <DateSelector />
+      <Reservation cabin={cabin} />
     </div>
   );
 }

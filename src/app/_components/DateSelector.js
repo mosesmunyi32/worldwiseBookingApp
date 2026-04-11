@@ -6,23 +6,75 @@ import {
   isSameDay,
   isWithinInterval,
 } from "date-fns";
+import "../_styles/globals.css";
 import "react-day-picker/dist/style.css";
 import { DateRange } from "react-day-picker";
 import { DayPicker } from "react-day-picker";
-import { useState } from "react";
+import { useReservation } from "./ReservationContext";
+import { useMediaQuery } from "usehooks-ts";
 
-export default function DateSelector() {
-  const [range, setRange] = useState();
-  console.log("start:", range, "end:", setRange);
+export default function DateSelector({ cabin }) {
+  const { range, setRange, resetRange } = useReservation();
+  const { regularPrice, discount = 0 } = cabin;
+  const numNights =
+    range?.from && range?.to ? differenceInDays(range?.to, range?.from) : 0;
+  const totalCabinPrice = numNights * (regularPrice - discount);
+
+  // const isLarge = useMediaQuery("(min-width:1100px)");
+  const isSmall = useMediaQuery("(max-width:760px)");
 
   return (
-    <div>
+    <div className="flex flex-col justify between ">
       <DayPicker
-        className="pt-12 place-self-center"
+        className="place-self-center mb-5 text-sm text-primary-400 bg-primary-950"
         mode="range"
-        selected={range}
         onSelect={setRange}
+        selected={range}
+        startMonth={new Date()}
+        // captionLayout="dropdown"
+        numberOfMonths={isSmall ? 1 : 2}
+        disabled={(curDate) => isPast(curDate)}
       />
+
+      <div className="flex items-center justify-between px-8 bg-accent-500 text-primary-800 h-16 rounded-md ">
+        <div className="flex items-baseline gap-6">
+          <p className="flex gap-2 items-baseline">
+            {discount > 0 ? (
+              <>
+                <span className="text-2xl">${regularPrice - discount}</span>
+                <span className="line-through font-semibold text-primary-700">
+                  ${regularPrice}
+                </span>
+              </>
+            ) : (
+              <span className="text-2xl">${regularPrice}</span>
+            )}
+            <span className="">/night</span>
+          </p>
+          {numNights ? (
+            <>
+              <p className="bg-accent-600 px-3 py-2 text-2xl">
+                <span>&times;</span> <span>{numNights}</span>
+              </p>
+              <p>
+                <span className="text-lg font-bold uppercase">Total</span>{" "}
+                <span className="text-2xl font-semibold">
+                  ${totalCabinPrice}
+                </span>
+              </p>
+            </>
+          ) : null}
+        </div>
+
+        {range.from || range.to ? (
+          <button
+            className="border border-primary-800 py-2 px-4 text-sm font-semibold rounded-full"
+            onClick={resetRange}
+          >
+            Select again..
+          </button>
+        ) : null}
+      </div>
     </div>
   );
 }
