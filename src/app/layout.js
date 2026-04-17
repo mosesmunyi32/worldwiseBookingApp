@@ -1,8 +1,6 @@
 import { Josefin_Sans } from "next/font/google";
 import "@/app/_styles/globals.css";
-import Header from "./_components/header";
-import { ReservationProvider } from "./_components/ReservationContext";
-import SideBar from "./_components/SideBar";
+import { ReservationProvider } from "@/app/_components/ReservationContext";
 
 const josefin = Josefin_Sans({
   subsets: ["latin"],
@@ -16,22 +14,16 @@ export const metadata = {
     "Luxurious cabin hotel, located in the heart o the Italian Dolomites, sorrounded by beautiful mountains and dark forest",
 };
 
-export default function RootLayout({ children }) {
+export default async function RootLayout({ children }) {
   return (
-    <html lang="en">
+    <html lang="en  " className="bg-white ">
       <body
-        className={`${josefin.className} antialiased bg-primary-950 text-primary-100 min-h-screen flex  flex-col relative`}
+        className={`${josefin.className}  bg-primary-950  antialiased text-primary-100 h-screen  flex`}
       >
-        <SideBar>
-          <div className="flex-1 px-8 py-12 grid">
-            <main className="max-w-7xl mx-auto mt-20 ">
-              <ReservationProvider>{children}</ReservationProvider>
-            </main>
-          </div>
-        </SideBar>
+        <ReservationProvider>{children}</ReservationProvider>
       </body>
     </html>
   );
 }
-
-// md:px-5 lg:px-20 xl:px-70
+// min - w - screen;
+// md: px - 20;

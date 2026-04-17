@@ -1,11 +1,10 @@
 import Link from "next/link";
-import { getCabin, getCabins } from "../../_lib/data-service";
+import { getCabin, getCabins } from "@/app/_lib/data-service";
 import Cabin from "@/app/_components/cabin";
 import DateSelector from "@/app/_components/DateSelector";
 import Reservation from "@/app/_components/Reservation";
 
 export async function generateStaticParams() {
-  // Skip in development to avoid slow recompiles
   if (process.env.NODE_ENV === "development") return [];
 
   const cabins = await getCabins();

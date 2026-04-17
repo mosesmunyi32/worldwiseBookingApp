@@ -4,35 +4,47 @@ import { differenceInDays } from "date-fns";
 import { useReservation } from "./ReservationContext";
 import SubmitButton from "./SubmitButton";
 import Image from "next/image";
+import { createBooking } from "../_lib/actions";
 
-export default function ReservationForm({ cabin }) {
+export default function ReservationForm({ cabin, user }) {
   const { range, resetRange } = useReservation();
   const { maxCapacity, regularPrice, discount = 0, id } = cabin;
 
   const startDate = range?.from;
   const endDate = range?.to;
-  const numNights = differenceInDays(startDate, endDate);
+  const numNights = differenceInDays(endDate, startDate);
   const cabinPrice = numNights * (regularPrice - discount);
 
-  return (
-    <div>
-      <div className="flex justify-between px-5 py-3">
-        <p>logged in as user</p>
+  const bookingData = {
+    cabinId: cabin.id,
+    startDate,
+    endDate,
+    numNights,
+    cabinPrice,
+  };
 
-        <div className="flex gap-4 items-center relative">
+  return (
+    <div className="scale-[1.0]">
+      <div className="flex  justify-between bg-primary-700 rounded-sm  text-xl px-5 py-3">
+        <p>logged in as</p>
+
+        <div className="flex gap-4 text-xl  items-center relative">
           <img
-            referrerPolicy="true"
-            src="/logo.png"
-            alt="user profile"
-            className="h-8 w-8 rounded-full"
+            referrerPolicy="no-referrer"
+            src={user.image}
+            alt={user.name}
+            className="h-8 w-8  rounded-full"
           />
-          <p>user name</p>
+          <p>{user.name} </p>
         </div>
       </div>
 
       <form
-        action=""
-        className="bg-primary-800 py-10 px-5 mx-3 text-lg flex flex-col gap-5 "
+        action={async (formData) => {
+          await createBooking(bookingData, formData);
+          resetRange();
+        }}
+        className="bg-primary-800 py-10 rounded-sm px-5 mx-3 text-lg flex flex-col gap-5 "
       >
         <div className="space-y-2">
           <label htmlFor="numGuests">How may Guests</label>

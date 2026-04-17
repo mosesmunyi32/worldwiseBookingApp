@@ -1,8 +1,5 @@
-import Image from "next/image";
-import { getCabins } from "../_lib/data-service";
-import CabinList from "../_components/cabinList";
 import { Suspense } from "react";
-import SpinData from "./loading";
+import CabinList from "@/app/_components/cabinList";
 
 export const metadata = {
   title: "cabins",
@@ -23,7 +20,7 @@ export default function AllCabins() {
         Welcome to paradise
       </p>
 
-      <Suspense fallback={<SpinData />}>
+      <Suspense fallback={<p>...loading</p>}>
         <CabinList />
       </Suspense>
     </div>

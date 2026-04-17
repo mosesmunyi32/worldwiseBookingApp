@@ -6,6 +6,7 @@ import { UsersIcon } from "@heroicons/react/24/solid";
 import BadgeIndicator from "@/app/_components/badgeIndicator";
 import TimeIndicator from "@/app/_components/timeIndicator";
 import { useCountdown } from "../_customHooks/timeCustom";
+import { setDiscountNull } from "../_lib/data-service";
 import { useEffect } from "react";
 
 export default function CabinCard({ cabin }) {
@@ -22,6 +23,12 @@ export default function CabinCard({ cabin }) {
 
   const { hasTimeLeft, timeLeft, isExpired } = useCountdown(discountDays);
 
+  useEffect(() => {
+    if (isExpired && discountDays) {
+      setDiscountNull(id);
+    }
+  }, [isExpired, id, discountDays]);
+
   return (
     <>
       {!isExpired && (
@@ -30,8 +37,8 @@ export default function CabinCard({ cabin }) {
         </div>
       )}
 
-      <div className="flex border-primary-800 border ">
-        <div className=" flex-1 relative">
+      <div className="flex bg-accent-600 border-accent-800 border ">
+        <div className=" flex-1  relative">
           <Image
             className="object-cover border-r border-primary-800"
             src={image}
@@ -42,7 +49,7 @@ export default function CabinCard({ cabin }) {
           />
         </div>
 
-        <div className="grow   ">
+        <div className="grow w-1/4  ">
           <div className="pt-5 pb-4 px-7 bg-primary-950 ">
             <h3 className="text-accent-500 font-semibold text-2xl mb-3 ">
               Cabin {name}
@@ -78,7 +85,7 @@ export default function CabinCard({ cabin }) {
 
           <div className="border-t-primary-800 text-right">
             <Link
-              className="border-primary-800 px-6 inline-block hover:bg-accent-600 transition-all hover:text-primary-900 border border-dashed   "
+              className="border-primary-800 px-6 py-5 inline-block text-primary-200 hover:bg-accent-600 transition-all hover:text-primary-900 border border-dashed   "
               href={`/cabins/${id}`}
             >
               Details & researvation &rarr;

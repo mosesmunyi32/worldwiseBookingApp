@@ -9,12 +9,29 @@ import {
 import "../_styles/globals.css";
 import "react-day-picker/dist/style.css";
 import { DateRange } from "react-day-picker";
-import { DayPicker } from "react-day-picker";
+import dynamic from "next/dynamic";
 import { useReservation } from "./ReservationContext";
 import { useMediaQuery } from "usehooks-ts";
 
-export default function DateSelector({ cabin }) {
+const DayPicker = dynamic(
+  () => import("react-day-picker").then((mod) => mod.DayPicker),
+  { ssr: false },
+);
+
+// function isAlreadyBooked(range, datesArr) {
+//   return (
+//     range.from &&
+//     range.to &&
+//     datesArr.some((date) =>
+//       isWithinInterval(date, { start: range.from, end: range.to }),
+//     )
+//   );
+// }
+export default function DateSelector({ cabin, bookedDates }) {
   const { range, setRange, resetRange } = useReservation();
+
+  // const disaplayRange = isAlreadyBooked(range, bookedDates) ? {} : range;
+
   const { regularPrice, discount = 0 } = cabin;
   const numNights =
     range?.from && range?.to ? differenceInDays(range?.to, range?.from) : 0;
@@ -33,7 +50,10 @@ export default function DateSelector({ cabin }) {
         startMonth={new Date()}
         // captionLayout="dropdown"
         numberOfMonths={isSmall ? 1 : 2}
-        disabled={(curDate) => isPast(curDate)}
+        disabled={(curDate) =>
+          isPast(curDate) ||
+          bookedDates.some((bookedDate) => isSameDay(bookedDate, curDate))
+        }
       />
 
       <div className="flex items-center justify-between px-8 bg-accent-500 text-primary-800 h-16 rounded-md ">

@@ -1,9 +1,10 @@
 import Image from "next/image";
-import { getCabins } from "../_lib/data-service";
+// import { getCabin, getCabins } from "../_lib/data-service";
 import CabinCard from "./cabinCard";
+import { getCabins } from "@/app/_lib/data-service";
 
 export default async function CabinList() {
-  await new Promise((resolve) => setTimeout(resolve, 3000));
+  // await new Promise((resolve) => setTimeout(resolve, 3000));
   const cabins = await getCabins();
 
   if (!cabins.length) return null;

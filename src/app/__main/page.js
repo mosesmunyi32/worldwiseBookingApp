@@ -1,10 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
-import Header from "./_components/header";
 export default function Page() {
   return (
-    <main className="w-screen flex flex-col justify-start items-center ">
-      <Header />
+    <main className="mt-24">
       <Image
         src="/bg.png"
         fill={true}
@@ -12,7 +10,7 @@ export default function Page() {
         alt="Mountains and forest with two cabins"
       />
 
-      <div className=" mt-40 z-10 text-center">
+      <div className="relative z-10 text-center">
         <h1 className="text-8xl text-primary-50 mb-10 tracking-tight font-normal">
           Welcome to Paradise
         </h1>
