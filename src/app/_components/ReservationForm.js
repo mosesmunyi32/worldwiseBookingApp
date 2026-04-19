@@ -1,6 +1,6 @@
 "use client";
 
-import { differenceInDays } from "date-fns";
+import { differenceInDays, eachDayOfInterval, subDays } from "date-fns";
 import { useReservation } from "./ReservationContext";
 import SubmitButton from "./SubmitButton";
 import Image from "next/image";
@@ -12,7 +12,11 @@ export default function ReservationForm({ cabin, user }) {
 
   const startDate = range?.from;
   const endDate = range?.to;
-  const numNights = differenceInDays(endDate, startDate);
+  const numNights = eachDayOfInterval({
+    start: startDate,
+    end: endDate,
+  }).length;
+
   const cabinPrice = numNights * (regularPrice - discount);
 
   const bookingData = {
@@ -56,7 +60,7 @@ export default function ReservationForm({ cabin, user }) {
           >
             <option value="">select number of guests</option>
 
-            {Array.from({ length: 8 }, (_, i) => i + 1).map((x) => (
+            {Array.from({ length: maxCapacity }, (_, i) => i + 1).map((x) => (
               <option value={x} key={x}>
                 {x} {x === 1 ? "guest" : "guests"}
               </option>

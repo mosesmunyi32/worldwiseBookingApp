@@ -1,11 +1,20 @@
 import { PencilSquareIcon, TrashIcon } from "@heroicons/react/24/solid";
 import Image from "next/image";
 
-import { format, isToday, parseISO, isPast, formatDistance } from "date-fns";
+import {
+  format,
+  isToday,
+  parseISO,
+  isPast,
+  formatDistance,
+  formatDistanceToNow,
+} from "date-fns";
+import DeleteReservation from "./DeleteReservedCabin";
+import Link from "next/link";
 
 // 2026-04-10T15:28:37
 
-function ReservationCard({ booking }) {
+function ReservationCard({ booking, onDelete }) {
   const formatDistanceFromNow = (dateStr) => {
     formatDistance(parseISO(dateStr), new Date(), { addSuffix: true }).replace(
       "about ",
@@ -22,11 +31,13 @@ function ReservationCard({ booking }) {
     numGuests,
     totalPrice,
     created_at,
+    cabinId,
     cabins,
   } = booking;
 
   const name = cabins?.name;
   const image = cabins?.image;
+  const start = new Date(startDate);
 
   return (
     <div className="flex border border-primary-800">
@@ -46,8 +57,8 @@ function ReservationCard({ booking }) {
             {numNights} nights in Cabin {name}
           </h3>
 
-          {isPast(new Date(startDate)) ? (
-            <span className="bg-yellow-800 text-yello-200 h-7 px-3 uppercase text-xs font-bold flex items-center roundd-sm ">
+          {isPast(start) && !isToday(start) ? (
+            <span className="bg-yellow-800 text-yellow-200 h-7 px-3 uppercase text-xs font-bold flex items-center rounded-sm ">
               {" "}
               past{" "}
             </span>
@@ -61,16 +72,21 @@ function ReservationCard({ booking }) {
 
         <p className="text-lg text-primary-300">
           {format(new Date(startDate), "EEE, MM dd yyy")}
-          {isToday(new Date(startDate))
-            ? "Today"
-            : formatDistanceFromNow(startDate)}
+          {isToday(new Date(startDate)) ? (
+            <span className="text-accent-500"> (Today) </span>
+          ) : (
+            <span className="text-accent-500">
+              {" "}
+              (in {formatDistanceToNow(startDate)} days)
+            </span>
+          )}
           &mdash; {format(new Date(endDate), "EEE, MM dd yyy")}
         </p>
 
         <div className="flex gap-5 mt-auto items-baseline ">
           <p className="text-xl font-semibold text-accent-400">
             {" "}
-            {totalPrice}{" "}
+            ${totalPrice}{" "}
           </p>
           <p className="text-primary-400">&bull;</p>
           <p className="text-lg text-primary-300">
@@ -84,13 +100,16 @@ function ReservationCard({ booking }) {
       </div>
 
       <div className="flex  flex-col border border-primary-800 w-25">
-        <div className="group flex items-center gap-2 uppercase text-sm  font-bold text-primary-300 border-b border-primary-800 grow px-3 hover:bg-accent-600 tansition-colors hover:text-primary-900 ">
+        <Link
+          href={`/account/reservations/edit/${id}`}
+          className="group flex items-center gap-2 uppercase text-sm  font-bold text-primary-300 border-b border-primary-800 grow px-3 hover:bg-accent-600 tansition-colors hover:text-primary-900 "
+        >
           <PencilSquareIcon className="h-5 w-5 text-primary-600 group-hover:text-primary-800 transition-colors " />
           <span className="mt-1">Edit</span>
-        </div>
-        <div className="group flex items-center gap-2 uppercase  text-sm  font-bold text-primary-300 border-b border-primary-800 grow px-3 hover:bg-accent-600 tansition-colors hover:text-primary-900 ">
-          <TrashIcon className="h-5 w-5 text-primary-600 group-hover:text-primary-800 transition-colors " />{" "}
-          <span>Delete</span>
+        </Link>
+
+        <div className="group flex items-center gap-2 uppercase text-sm  font-bold text-primary-300 border-b border-primary-800 grow px-3 hover:bg-accent-600 tansition-colors hover:text-primary-900 ">
+          <DeleteReservation bookingId={id} onDelete={onDelete} />
         </div>
       </div>
     </div>

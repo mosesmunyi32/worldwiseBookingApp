@@ -1,6 +1,7 @@
 import ReservationCard from "@/app/_components/ReservationCard";
+import ReservationList from "@/app/_components/ReservationList";
 import { auth } from "@/app/_lib/auth";
-import { getBookings } from "@/app/_lib/data-service";
+import { getBookingWithGuestID } from "@/app/_lib/data-service";
 import Link from "next/link";
 
 export default async function Page() {
@@ -8,7 +9,7 @@ export default async function Page() {
 
   const guestId = session.user.guestId;
 
-  const bookings = await getBookings(guestId);
+  const bookings = await getBookingWithGuestID(guestId);
 
   return (
     <div>
@@ -16,16 +17,14 @@ export default async function Page() {
         Your Reservations
       </h2>
 
-      {bookings.length === 0 ? (
+      {bookings.length === 0 && (
         <p>
-          You have no reservations yet. check out our
-          <Link href="/cabins">luxury cabins &rarr; </Link>
+          You have no reservations yet. Check out our{" "}
+          <Link href="/cabins">luxury cabins &rarr;</Link>
         </p>
-      ) : (
-        bookings.map((booking) => (
-          <ReservationCard booking={booking} key={booking.id} />
-        ))
       )}
+
+      <ReservationList bookings={bookings} />
     </div>
   );
 }

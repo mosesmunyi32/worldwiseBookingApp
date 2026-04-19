@@ -3,15 +3,15 @@
 import {
   differenceInDays,
   isPast,
+  isToday,
   isSameDay,
   isWithinInterval,
 } from "date-fns";
 import "../_styles/globals.css";
 import "react-day-picker/dist/style.css";
-import { DateRange } from "react-day-picker";
+import { DateRange, getDefaultClassNames } from "react-day-picker";
 import dynamic from "next/dynamic";
 import { useReservation } from "./ReservationContext";
-import { useMediaQuery } from "usehooks-ts";
 
 const DayPicker = dynamic(
   () => import("react-day-picker").then((mod) => mod.DayPicker),
@@ -28,30 +28,26 @@ const DayPicker = dynamic(
 //   );
 // }
 export default function DateSelector({ cabin, bookedDates }) {
+  // const getDefaultClassNames = getDefaultClassNames();
   const { range, setRange, resetRange } = useReservation();
-
-  // const disaplayRange = isAlreadyBooked(range, bookedDates) ? {} : range;
 
   const { regularPrice, discount = 0 } = cabin;
   const numNights =
     range?.from && range?.to ? differenceInDays(range?.to, range?.from) : 0;
   const totalCabinPrice = numNights * (regularPrice - discount);
 
-  // const isLarge = useMediaQuery("(min-width:1100px)");
-  const isSmall = useMediaQuery("(max-width:760px)");
-
   return (
-    <div className="flex flex-col justify between ">
+    <div className="flex flex-col justify-between ">
       <DayPicker
         className="place-self-center mb-5 text-sm text-primary-400 bg-primary-950"
         mode="range"
         onSelect={setRange}
         selected={range}
         startMonth={new Date()}
-        // captionLayout="dropdown"
-        numberOfMonths={isSmall ? 1 : 2}
+        captionLayout="dropdown"
+        numberOfMonths={2}
         disabled={(curDate) =>
-          isPast(curDate) ||
+          (isPast(curDate) && !isToday(curDate)) ||
           bookedDates.some((bookedDate) => isSameDay(bookedDate, curDate))
         }
       />

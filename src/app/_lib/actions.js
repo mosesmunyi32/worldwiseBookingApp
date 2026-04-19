@@ -3,6 +3,13 @@ import { redirect } from "next/navigation";
 import { auth, signIn, signOut } from "./auth";
 import { supabase } from "./supabase";
 import { revalidatePath } from "next/cache";
+import { eachDayOfInterval } from "date-fns";
+import {
+  getBooking,
+  getBookings,
+  getBookingWithGuestID,
+  getCabin,
+} from "./data-service";
 
 export async function updateGuest(formData) {
   const session = await auth();
@@ -24,7 +31,7 @@ export async function updateGuest(formData) {
     .eq("id", session.user.guestId)
     .select();
   if (error) {
-    console.log(error);
+    console.error(error);
     throw new Error(" Guest could not be updated");
   }
 
@@ -50,12 +57,71 @@ export async function createBooking(bookingData, formData) {
   const { data, error } = await supabase
     .from("bookings")
     .insert([newBooking])
-    .select();
+    .select()
+    .single();
 
   if (error) throw new Error("Booking could not be created");
 
   revalidatePath(`/cabins/${bookingData.cabinId}`);
-  redirect("/cabins/thankyou");
+  redirect(`/cabins/thankyou?cabinId=${data.cabinId}&bookingId=${data.id}`);
+}
+
+export async function deleteBooking(id) {
+  const { error } = await supabase.from("bookings").delete().eq("id", id);
+
+  if (error) {
+    console.error(error);
+    throw new Error("Booking could not be deleted");
+  }
+  revalidatePath(`/account/reservations`);
+}
+
+export async function updateBookingData(formData) {
+  const startDateUpd = new Date(formData.get("startDate")).toISOString();
+  const endDateUpd = new Date(formData.get("endDate")).toISOString();
+
+  if (startDateUpd > endDateUpd) {
+    throw new Error("End date must greater than start date");
+  }
+
+  const cabinId = formData.get("cabinId");
+
+  const cabin = await getCabin(cabinId);
+
+  const discount = cabin.discount;
+  const regularPrice = cabin.regularPrice;
+
+  const numNightsUpd = eachDayOfInterval({
+    start: startDateUpd,
+    end: endDateUpd,
+  }).length;
+
+  const totalPriceUpd = (regularPrice - discount) * numNightsUpd;
+
+  const newBookingData = {
+    startDate: formData.get("startDate"),
+    endDate: formData.get("endDate"),
+    numGuests: Number(formData.get("numGuests")),
+    numNights: numNightsUpd,
+    totalPrice: totalPriceUpd,
+    observations: formData.get("observations"),
+  };
+
+  const bookingId = Number(formData.get("bookingId"));
+
+  const { data, error } = await supabase
+    .from("bookings")
+    .update(newBookingData)
+    .eq("id", Number(bookingId))
+    .select();
+
+  if (error) {
+    console.error(error);
+    throw new Error("Cabin could not be updated");
+  }
+
+  revalidatePath(`/account/reservations/edit/${bookingId}`);
+  redirect(`/account/reservations/orderupdate/${bookingId}`);
 }
 
 export async function signInAction() {

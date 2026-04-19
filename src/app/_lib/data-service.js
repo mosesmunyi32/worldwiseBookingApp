@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { supabase } from "./supabase";
 import { eachDayOfInterval, parseISO } from "date-fns";
 import { Temporal } from "@js-temporal/polyfill";
+import { auth } from "./auth";
 
 export async function getCabins() {
   const { data: cabins, error } = await supabase.from("cabins").select("*");
@@ -28,11 +29,15 @@ export async function getCabin(id) {
   return cabin;
 }
 
-export async function getBooking(id) {
-  let { data: bookings, error } = await supabase
+export async function getBooking(bookingId) {
+  const session = await auth();
+
+  if (!session) throw new Error("Unautharized");
+
+  let { data, error } = await supabase
     .from("bookings")
-    .select("*")
-    .eq("id", id)
+    .select("*, cabin:cabins(*)")
+    .eq("id", Number(bookingId))
     .single();
 
   if (error) {
@@ -40,10 +45,10 @@ export async function getBooking(id) {
     throw new Error("Booking could not get loaded");
   }
 
-  return bookings;
+  return data;
 }
 
-export async function getBookings(guestId) {
+export async function getBookingWithGuestID(guestId) {
   let { data: booking, error } = await supabase
     .from("bookings")
     .select(
@@ -80,33 +85,22 @@ export async function getBookedDatesbyCabinId(cabinId) {
     .from("bookings")
     .select("*")
     .eq("cabinId", cabinId)
-    .or(`startDate.gte.${today}, status.eq.checked-in `);
+    .or(`startDate.gte.${today},status.eq.checked-in`);
 
   if (error) {
     console.error(error);
     throw new Error("Bookings could not get loaded");
   }
-
   const bookedDates = data
     .map((booking) => {
       return eachDayOfInterval({
-        start: new Date(booking.StartDate),
-        end: new Date(booking.end),
+        start: new Date(booking.startDate),
+        end: new Date(booking.endDate),
       });
     })
     .flat();
 
   return bookedDates;
-}
-
-export async function setDiscountNull(id) {
-  const { error } = await supabase
-    .from("cabins")
-    .update({ discount: null, discountDays: null })
-    .eq("id", id);
-
-  if (error) console.error(error);
-  throw new Error("failed to update discountDays");
 }
 
 export async function getSettings() {
@@ -144,7 +138,6 @@ export async function createGuest(newGuest) {
     console.error("supabase insert error:", error);
     throw new Error("Guests could not be created");
   }
-  console.log("Done with use creation process");
   return data;
 }
 
@@ -164,6 +157,15 @@ export async function createBooking({ newBooking }) {
 }
 
 //Update
+export async function setDiscountNull(id) {
+  const { error } = await supabase
+    .from("cabins")
+    .update({ discount: null, discountDays: null })
+    .eq("id", id);
+
+  if (error) console.error(error);
+  throw new Error("failed to update discountDays");
+}
 
 // export async function updateGuest(id, updateFields) {
 //   const { data, error } = await supabase
@@ -197,12 +199,3 @@ export async function updateBooking(id, updatedFields) {
 }
 
 //Delete
-export async function deleteBooking(id) {
-  const { data, error } = await supabase.from("booking").delete().eq("id", id);
-
-  if (error) {
-    console.error(error);
-    throw new Error("Booking could not be deleted");
-  }
-  return data;
-}
