@@ -20,12 +20,6 @@ const listItems = [
     itemName: "Reservations",
   },
   {
-    hoverName: "Settings",
-    icon: SettingsIcon,
-    toLink: "/settings",
-    itemName: "Settings",
-  },
-  {
     hoverName: "Available Cabins",
     icon: CabinIcon,
     toLink: "/cabins",
@@ -42,19 +36,21 @@ const listItems = [
 
 function SideBarContent() {
   return (
-    <div className="  flex flex-col  justify-between items-center gap-60">
-      <ul className="menu grow  flex-1 flex-col items-center justify-center ">
-        {listItems.map((item, i) => {
-          return (
-            <SideBarListItem
-              key={i + 1}
-              hoverName={item.itemName}
-              icon={item.icon}
-              itemName={item.itemName}
-              toLink={item.toLink}
-            />
-          );
-        })}
+    <div className="  flex flex-col  items-center gap-60">
+      <ul className="menu grow mx-auto flex-col items-center justify-center ">
+        <div>
+          {listItems.map((item, i) => {
+            return (
+              <SideBarListItem
+                key={i + 1}
+                hoverName={item.itemName}
+                icon={item.icon}
+                itemName={item.itemName}
+                toLink={item.toLink}
+              />
+            );
+          })}
+        </div>
       </ul>
       <UserProfile />
     </div>

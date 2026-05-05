@@ -8,7 +8,7 @@ function ReserveIcon({ className = "" }) {
       strokeWidth="1"
       strokeLinecap="round"
       strokeLinejoin="round"
-      className={`my-1.5 inline-block size-4 ${className} text-primary-200 `}
+      className={`my-1.5 inline-block size-2 ${className} text-primary-200 `}
     >
       <path d="M8 2v4" />
       <path d="M16 2v4" />
