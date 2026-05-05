@@ -1,12 +1,19 @@
 import { Suspense } from "react";
 import CabinList from "@/app/_components/cabinList";
+import Filter from "@/app/_components/Filter";
+import LoadingSkeleton from "@/app/_components/loadingSkeleton";
 
 export const metadata = {
-  title: "cabins",
+  title: "Luxury Cabins in Kenyan Dolomites",
+  description:
+    " Explore luxurious cabins in Kenya at Nyeri with private hot tubs, swimming pool, and peaceful nature",
 };
-export default function AllCabins() {
+export default async function AllCabins({ searchParams }) {
+  const params = await searchParams;
+  const filter = params?.capacity ?? "all";
+
   return (
-    <div>
+    <section>
       <h1 className="text-4xl mb-5 text-accent-400 font-medium">
         Our Luxury Cabins
       </h1>
@@ -20,9 +27,13 @@ export default function AllCabins() {
         Welcome to paradise
       </p>
 
-      <Suspense fallback={<p>...loading</p>}>
-        <CabinList />
+      <div className="flex justify-end mb-8">
+        <Filter />
+      </div>
+
+      <Suspense fallback={<LoadingSkeleton />} key={filter}>
+        <CabinList filter={filter} />
       </Suspense>
-    </div>
+    </section>
   );
 }

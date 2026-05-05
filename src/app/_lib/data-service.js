@@ -158,6 +158,12 @@ export async function createBooking({ newBooking }) {
 
 //Update
 export async function setDiscountNull(id) {
+  const { discount, discountDays } = await getCabin(id);
+
+  if (discount === null || discountDays === null) {
+    return;
+  }
+
   const { error } = await supabase
     .from("cabins")
     .update({ discount: null, discountDays: null })

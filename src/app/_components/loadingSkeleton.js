@@ -2,35 +2,37 @@ import { UsersIcon } from "lucide-react";
 
 export default function LoadingSkeleton() {
   return (
-    <div className=" skeleton grid sm:grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12 xl:gap-14 ">
-      <div className="flex border-primary-800 border ">
-        <div className=" flex-1 relative"></div>
+    <div
+      className="grid sm:grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12 xl:gap-14"
+      aria-hidden="true"
+    >
+      {Array.from({ length: 6 }).map((_, i) => (
+        <div key={i} className="flex border border-primary-800 animate-pulse">
+          <div className="skeleton flex-1 bg-primary-800 min-62.5" />
 
-        <div className="grow skeleton  ">
-          <div className="pt-5 pb-4 px-7 bg-primary-950 ">
-            <h3 className="skeleton-text text-accent-500 font-semibold text-2xl mb-3 ">
-              cabin
-            </h3>
+          <div className="skeleton grow">
+            <div className="pt-5 pb-4 px-7 bg-primary-950">
+              <div className="h-8 w-2/3 bg-primary-800 rounded mb-4" />
 
-            <div className="flex">
-              <UsersIcon className=" h-5 w-5 text-primary-600" />
-              <p className="skeleton-text text-lg text-primary-200">
-                for upto <span className="font-bold"> ? </span> Guests
-              </p>
+              <div className="flex items-center gap-3 mb-4">
+                <UsersIcon className="h-5 w-5 text-primary-700" />
+
+                <div className="h-5 w-32 bg-primary-800 rounded" />
+              </div>
+
+              <div className="flex gap-3 justify-end items-baseline">
+                <div className="h-8 w-20 bg-primary-800 rounded" />
+
+                <div className="h-4 w-12 bg-primary-800 rounded" />
+              </div>
             </div>
 
-            <div className="skeleton flex gap-3 justify-end items-baseline ">
-              <span className="skeleton-text text-3xl font-[350]">$...</span>
-
-              <span className="skeleton-text text-primary-200">/night </span>
+            <div className="border-t border-primary-800 p-5 flex justify-end">
+              <div className="h-5 w-40 bg-primary-800 rounded" />
             </div>
-          </div>
-
-          <div className="skeleton border-t-primary-800 text-right">
-            <p className="skeleton-text">Details & researvation &rarr;</p>
           </div>
         </div>
-      </div>
+      ))}
     </div>
   );
 }

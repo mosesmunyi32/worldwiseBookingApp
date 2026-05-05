@@ -8,6 +8,9 @@ import {
   isPast,
   formatDistance,
   formatDistanceToNow,
+  isFuture,
+  startOfToday,
+  isAfter,
 } from "date-fns";
 import DeleteReservation from "./DeleteReservedCabin";
 import Link from "next/link";
@@ -38,6 +41,7 @@ function ReservationCard({ booking, onDelete }) {
   const name = cabins?.name;
   const image = cabins?.image;
   const start = new Date(startDate);
+  const today = startOfToday();
 
   return (
     <div className="flex border border-primary-800">
@@ -71,15 +75,24 @@ function ReservationCard({ booking, onDelete }) {
         </div>
 
         <p className="text-lg text-primary-300">
-          {format(new Date(startDate), "EEE, MM dd yyy")}
-          {isToday(new Date(startDate)) ? (
+          {/* {isToday(new Date(startDate)) && isFuture(new Date(startDate)) ? (
             <span className="text-accent-500"> (Today) </span>
           ) : (
             <span className="text-accent-500">
               {" "}
               (in {formatDistanceToNow(startDate)} days)
             </span>
+          )} */}
+          {isToday(new Date(startDate)) && (
+            <span className="text-accent-500"> (Today) </span>
           )}
+          {isAfter(start, today) && !isToday(new Date(startDate)) && (
+            <span className="text-accent-500">
+              {" "}
+              (in {formatDistanceToNow(new Date(startDate))})
+            </span>
+          )}
+          {format(new Date(startDate), "EEE, MM dd yyy")}
           &mdash; {format(new Date(endDate), "EEE, MM dd yyy")}
         </p>
 

@@ -18,7 +18,7 @@ export default function DeleteReservation({ bookingId, onDelete }) {
     >
       {isPending ? (
         <span className="mx-auto">
-          <p>Loading...</p>
+          <p>deleting...</p>
         </span>
       ) : (
         <>
